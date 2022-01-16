@@ -6,7 +6,7 @@ body {
 
 .login_card {
     margin: auto;
-    max-height: 340px;
+    // max-height: 340px;
     top: 0;
     bottom: 0;
     left: 0;
@@ -14,6 +14,7 @@ body {
     display: flex;
     justify-content: center;
     max-width: 520px;
+    height: fit-content;
 }
 
 .logo_img {
@@ -23,5 +24,3 @@ body {
 .form-control:focus {
     box-shadow: none;
 }
-
-$primary: #f49e4c;

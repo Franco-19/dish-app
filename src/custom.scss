@@ -1,8 +1,6 @@
 @import "../node_modules/bootstrap/scss/functions";
 
 // Default variable overrides
-// $body-bg: #000;
-// $body-color: #111;
 $primary: #3c6997;
 $secondary: #f49e4c;
 $enable-shadows: true;
@@ -12,7 +10,5 @@ $enable-shadows: true;
 @import "../node_modules/bootstrap/scss/mixins";
 @import "../node_modules/bootstrap/scss/root";
 
-// Optional Bootstrap components here
-// @import "../node_modules/bootstrap/scss/reboot";
+// Optional Bootstrap components
 @import "../node_modules/bootstrap/scss/buttons";
-// etc
