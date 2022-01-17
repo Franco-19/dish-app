@@ -5,6 +5,12 @@ $primary: #3c6997;
 $secondary: #f49e4c;
 $enable-shadows: true;
 
+$alert-padding-y: 0.5rem;
+
+.alert {
+    width: fit-content;
+}
+
 // Required
 @import "../node_modules/bootstrap/scss/variables";
 @import "../node_modules/bootstrap/scss/mixins";
@@ -12,3 +18,4 @@ $enable-shadows: true;
 
 // Optional Bootstrap components
 @import "../node_modules/bootstrap/scss/buttons";
+@import "../node_modules/bootstrap/scss/alert";

@@ -9,6 +9,7 @@ export default function FloatCustomInput({
     inputClass = "",
     inputContainerClass = "",
     onChange = "",
+    onBlur = "",
     validation = null,
 }) {
     return (
@@ -19,13 +20,11 @@ export default function FloatCustomInput({
                 id={id}
                 placeholder={placeholder}
                 onChange={onChange}
+                onBlur={onBlur}
                 value={value}
                 name={id}
             />
             <label htmlFor={id}>{labelContent}</label>
-            <div className="invalid-feedback">
-                required!!
-            </div>
             {validation}
         </div>
     );
