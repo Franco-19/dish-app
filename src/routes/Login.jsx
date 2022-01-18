@@ -1,23 +1,38 @@
 // Libraries
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import Swal from "sweetalert2";
+import withReactContent from 'sweetalert2-react-content'
 
 // Components
 import FloatCustomInput from "../components/FloatCustomInput";
 import DataCenteredCard from "../components/DataCenteredCard";
 import Logo from "../components/Logo";
 import ErrorMessage from "../components/ErrorMessage";
+import { UserSessionContext } from "../components/UserSessionContext";
 
 // Images
 import logo from "../img/dish_icon.png";
 
 export default function Login() {
+    useEffect(() => {
+        if (isLogged) {
+            return navigate("/");
+        }
+    });
+
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(false);
+    const [success, setSuccess] = useState(false);
+
+    const { isLogged, setIsLogged, setSessionValue, sessionValue } =
+        useContext(UserSessionContext);
 
     let navigate = useNavigate();
+    const successSwalAlert = withReactContent(Swal);
 
     const validation = Yup.object({
         emailInput: Yup.string()
@@ -29,6 +44,22 @@ export default function Login() {
     });
 
     const Button = () => {
+        if (error) {
+            return (
+                <button className="btn btn-danger" type="button" disabled>
+                    Hubo un error
+                </button>
+            );
+        }
+
+        if (success) {
+            return (
+                <button className="btn btn-success" type="button" disabled>
+                    Success
+                </button>
+            );
+        }
+
         if (isLoading) {
             return (
                 <button className="btn btn-primary" type="button" disabled>
@@ -62,10 +93,16 @@ export default function Login() {
                     password: value.passwordInput,
                 })
                 .then(function (response) {
-                    console.log(response);
-                    setIsLoading(false);
-                    console.log(`El token es ${response.data.token}`);
-                    // navigate("/");
+                    try {
+                        validateSession(response.data.token);
+                    } catch (error) {
+                        setIsLoading(false);
+                        setError(error);
+                        console.error("Token incorrecto");
+                        setTimeout(() => {
+                            setError(false);
+                        }, 2000);
+                    }
                 })
                 .catch(function (error) {
                     setIsLoading(false);
@@ -74,6 +111,26 @@ export default function Login() {
         },
         validationSchema: validation,
     });
+
+    const validateSession = (tokenValue) => {
+        if (tokenValue === sessionValue.token) {
+            setIsLoading(false);
+            successSwalAlert.fire({
+                title: <strong>Session started successfully</strong>,
+                html: <i>Redirecting</i>,
+                icon: "success",
+            });
+            setSuccess(true);
+            setTimeout(() => {
+                setIsLogged(true);
+                setSessionValue({ logged: true, token: tokenValue });
+                successSwalAlert.close()
+                navigate("/");
+            }, 1500);
+        } else {
+            throw "error has ocurred";
+        }
+    };
 
     return (
         <DataCenteredCard>
