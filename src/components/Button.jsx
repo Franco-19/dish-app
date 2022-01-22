@@ -12,7 +12,7 @@ const Button = ({
     addClass = "",
     type = "submit",
     id = "",
-    onClick = "",
+    onClick = null,
 }) => {
     if (error) {
         return (

@@ -1,144 +1,65 @@
 // Libraries
 import React, { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // Components
-import Header from "../components/Header";
 import Dish from "../components/Dish";
 import { UserSessionContext } from "../components/UserSessionContext";
+import { DishesContext } from "../components/DishesContext";
+import Gridlayout from "../components/GridLayout";
+import AppLayout from "../components/AppLayout";
 
 export default function Home() {
-    const dishes = [
-        {
-            id: 419357,
-            title: "Burger Sliders",
-            image: "https://images.spoonacular.com/file/wximages/419357-312x231.png",
-            imageType: "png",
-            restaurantChain: "Hooters",
-            servingSize: null,
-            readableServingSize: null,
-            servings: {
-                number: 1.0,
-                size: null,
-                unit: null,
-            },
-        },
-        {
-            id: 424571,
-            title: "Bacon King Burger",
-            image: "https://images.spoonacular.com/file/wximages/424571-312x231.png",
-            imageType: "png",
-            restaurantChain: "Burger King",
-            servingSize: null,
-            readableServingSize: null,
-            servings: {
-                number: 1.0,
-                size: null,
-                unit: null,
-            },
-        },
-        {
-            id: 424571,
-            title: "Bacon King Burger",
-            image: "https://images.spoonacular.com/file/wximages/424571-312x231.png",
-            imageType: "png",
-            restaurantChain: "Burger King",
-            servingSize: null,
-            readableServingSize: null,
-            servings: {
-                number: 1.0,
-                size: 10,
-                unit: 'kg',
-            },
-        },
-        {
-            id: 424571,
-            title: "Bacon King Burger",
-            image: "https://images.spoonacular.com/file/wximages/424571-312x231.png",
-            imageType: "png",
-            restaurantChain: "Burger King",
-            servingSize: null,
-            readableServingSize: null,
-            servings: {
-                number: 1.0,
-                size: null,
-                unit: null,
-            },
-        },
-        {
-            id: 424571,
-            title: "Bacon King Burger",
-            image: "https://images.spoonacular.com/file/wximages/424571-312x231.png",
-            imageType: "png",
-            restaurantChain: "Burger King",
-            servingSize: null,
-            readableServingSize: null,
-            servings: {
-                number: 1.0,
-                size: null,
-                unit: null,
-            },
-        },
-        {
-            id: 424571,
-            title: "Bacon King Burger",
-            image: "https://images.spoonacular.com/file/wximages/424571-312x231.png",
-            imageType: "png",
-            restaurantChain: "Burger King",
-            servingSize: null,
-            readableServingSize: null,
-            servings: {
-                number: 1.0,
-                size: null,
-                unit: null,
-            },
-        },
-        {
-            id: 424571,
-            title: "Bacon King Burger",
-            image: "https://images.spoonacular.com/file/wximages/424571-312x231.png",
-            imageType: "png",
-            restaurantChain: "Burger King",
-            servingSize: null,
-            readableServingSize: null,
-            servings: {
-                number: 1.0,
-                size: null,
-                unit: null,
-            },
-        },
-    ];
-
     let navigate = useNavigate();
 
     const { isLogged } = useContext(UserSessionContext);
+    const { menuItems, deleteDish } = useContext(DishesContext);
 
     useEffect(() => {
         if (!isLogged) {
             navigate("/login");
         }
     });
-    return (
-        <div>
-            <Header />
-            {/* Stats */}
-            {/* Items */}
+
+    const RenderItems = () => {
+        if (menuItems.length !== 0) {
+            return (
+                <Gridlayout>
+                    {menuItems.map(
+                        ({ id, title, image, servings, restaurantChain }) => {
+                            return (
+                                <Dish
+                                    title={title}
+                                    image={image}
+                                    servings={servings}
+                                    restaurantChain={restaurantChain}
+                                    key={id}
+                                    deleteButton={true}
+                                    deleteDish={() => deleteDish(id)}
+                                />
+                            );
+                        }
+                    )}
+                </Gridlayout>
+            );
+        }
+
+        return (
             <div className="container">
-                <div className="row row-cols-1 row-cols-md-4 g-4">
-                    {dishes.map((dish) => {
-                        return (
-                            <Dish
-                                title={dish.title}
-                                image={dish.image}
-                                servingSize={dish.servings.size}
-                                servingUnit={dish.servings.unit}
-                                servingNumber={dish.servings.number}
-                                restaurantChain={dish.restaurantChain}
-                            />
-                        );
-                    })}
-                </div>
+                <p className="text-center">
+                    No tienes ningún menú creado actualmente.
+                    <br />
+                    <Link to="/search">Comienza creando uno ahora</Link>
+                </p>
             </div>
-        </div>
+        );
+    };
+    return (
+        <AppLayout>
+            {/* Stats */}
+
+            {/* Items */}
+            <RenderItems />
+        </AppLayout>
     );
 }

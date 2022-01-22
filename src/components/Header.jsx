@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import Logo from "./Logo";
 
@@ -6,9 +7,9 @@ export default function Header() {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm mb-4"> 
       <div className="container">
-        <a className="navbar-brand" href="/">
+        <Link to="/" className="navbar-brand">
           <Logo addTitleClass="fs-2 text fw-light" />
-        </a>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -23,9 +24,9 @@ export default function Header() {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/search">
+              <Link className="nav-link active" aria-current="page" to="/search">
                 Create menu
-              </a>
+              </Link>
             </li>
             {/* <li className="nav-item">
               <a className="nav-link disabled" href="/" >Disabled</a>
