@@ -13,6 +13,7 @@ import DataCenteredCard from "../components/DataCenteredCard";
 import Logo from "../components/Logo";
 import ErrorMessage from "../components/ErrorMessage";
 import { UserSessionContext } from "../components/UserSessionContext";
+import Button from "../components/Button";
 
 // Images
 import logo from "../img/dish_icon.png";
@@ -43,42 +44,42 @@ export default function Login() {
             .required(<ErrorMessage>The field is required</ErrorMessage>),
     });
 
-    const Button = () => {
-        if (error) {
-            return (
-                <button className="btn btn-danger" type="button" disabled>
-                    Hubo un error
-                </button>
-            );
-        }
+    // const Button = () => {
+    //     if (error) {
+    //         return (
+    //             <button className="btn btn-danger" type="button" disabled>
+    //                 We have an error 
+    //             </button>
+    //         );
+    //     }
 
-        if (success) {
-            return (
-                <button className="btn btn-success" type="button" disabled>
-                    Success
-                </button>
-            );
-        }
+    //     if (success) {
+    //         return (
+    //             <button className="btn btn-success" type="button" disabled>
+    //                 Success
+    //             </button>
+    //         );
+    //     }
 
-        if (isLoading) {
-            return (
-                <button className="btn btn-primary" type="button" disabled>
-                    <span
-                        className="spinner-border spinner-border-sm"
-                        role="status"
-                        aria-hidden="true"
-                    ></span>
-                    Loading...
-                </button>
-            );
-        }
+    //     if (isLoading) {
+    //         return (
+    //             <button className="btn btn-primary" type="button" disabled>
+    //                 <span
+    //                     className="spinner-border spinner-border-sm"
+    //                     role="status"
+    //                     aria-hidden="true"
+    //                 ></span>
+    //                 Loading...
+    //             </button>
+    //         );
+    //     }
 
-        return (
-            <button type="submit" className="btn btn-primary">
-                Log In
-            </button>
-        );
-    };
+    //     return (
+    //         <button type="submit" className="btn btn-primary">
+    //             Log In
+    //         </button>
+    //     );
+    // };
 
     const formik = useFormik({
         initialValues: {
@@ -134,7 +135,7 @@ export default function Login() {
 
     return (
         <DataCenteredCard>
-            <Logo logo={logo} />
+            <Logo logo={logo} addContainerClass="mb-3" />
             <form
                 className="container-fluid d-flex flex-column"
                 onSubmit={formik.handleSubmit}
@@ -172,7 +173,7 @@ export default function Login() {
                 />
                 <div className="row d-flex align-items-center">
                     <div className="d-flex justify-content-end col-12">
-                        <Button />
+                        <Button error={error} success={success} isLoading={isLoading} text="Log In" />
                     </div>
                 </div>
             </form>

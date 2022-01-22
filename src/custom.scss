@@ -11,6 +11,12 @@ $alert-padding-y: 0.5rem;
     width: fit-content;
 }
 
+.card-img-top {
+    height: 250px;
+    object-fit: cover;
+    object-position: 50% 50%;
+}
+
 // Required
 @import "../node_modules/bootstrap/scss/variables";
 @import "../node_modules/bootstrap/scss/mixins";

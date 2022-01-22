@@ -1,10 +1,18 @@
 import React from "react";
 
-const Logo = ({ logo }) => {
+const Logo = ({ logo = false, addTitleClass = '', addContainerClass = ''}) => {
+    const Image = () => {
+        if (logo) {
+            return <img className="logo_img" src={logo} alt="dish food logo" />;
+        }
+
+        return null
+    };
+
     return (
-        <div className="d-flex align-items-end justify-content-center mb-3">
-            <img className="logo_img" src={logo} alt="dish food logo" />
-            <h1>Dish App</h1>
+        <div className={`d-flex align-items-end justify-content-center ${addContainerClass}`}>
+            <Image />
+            <h1 className={ addTitleClass }>Dish App</h1>
         </div>
     );
 };
