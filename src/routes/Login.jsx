@@ -9,7 +9,7 @@ import withReactContent from 'sweetalert2-react-content'
 
 // Components
 import FloatCustomInput from "../components/FloatCustomInput";
-import DataCenteredCard from "../components/DataCenteredCard";
+import Card from "../components/Card";
 import Logo from "../components/Logo";
 import ErrorMessage from "../components/ErrorMessage";
 import { UserSessionContext } from "../components/UserSessionContext";
@@ -43,43 +43,6 @@ export default function Login() {
             .min(5, <ErrorMessage>Must be 5 characters or more</ErrorMessage>)
             .required(<ErrorMessage>The field is required</ErrorMessage>),
     });
-
-    // const Button = () => {
-    //     if (error) {
-    //         return (
-    //             <button className="btn btn-danger" type="button" disabled>
-    //                 We have an error 
-    //             </button>
-    //         );
-    //     }
-
-    //     if (success) {
-    //         return (
-    //             <button className="btn btn-success" type="button" disabled>
-    //                 Success
-    //             </button>
-    //         );
-    //     }
-
-    //     if (isLoading) {
-    //         return (
-    //             <button className="btn btn-primary" type="button" disabled>
-    //                 <span
-    //                     className="spinner-border spinner-border-sm"
-    //                     role="status"
-    //                     aria-hidden="true"
-    //                 ></span>
-    //                 Loading...
-    //             </button>
-    //         );
-    //     }
-
-    //     return (
-    //         <button type="submit" className="btn btn-primary">
-    //             Log In
-    //         </button>
-    //     );
-    // };
 
     const formik = useFormik({
         initialValues: {
@@ -134,7 +97,7 @@ export default function Login() {
     };
 
     return (
-        <DataCenteredCard>
+        <Card centered={true} > 
             <Logo logo={logo} addContainerClass="mb-3" />
             <form
                 className="container-fluid d-flex flex-column"
@@ -184,6 +147,6 @@ export default function Login() {
             >
                 Consultar estado actual
             </button> */}
-        </DataCenteredCard>
+        </Card>
     );
 }

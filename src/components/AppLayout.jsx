@@ -1,13 +1,13 @@
-import React from 'react';
-import Header from './Header';
+import React from "react";
+import Header from "./Header";
 
 const AppLayout = (props) => {
     return (
         <React.Fragment>
             <Header />
-            { props.children }
+            <div className="container">{props.children}</div>
         </React.Fragment>
-    );  
-}
+    );
+};
 
 export default AppLayout;

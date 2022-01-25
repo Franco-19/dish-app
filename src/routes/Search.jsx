@@ -1,4 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { useFormik } from "formik";
 import axios from "axios";
@@ -8,31 +9,49 @@ import Dish from "../components/Dish";
 import AppLayout from "../components/AppLayout";
 import Gridlayout from "../components/GridLayout";
 import { DishesContext } from "../components/DishesContext";
+import { UserSessionContext } from "../components/UserSessionContext";
+import Loadingdata from "../components/LoadingData";
+import ErrorMessage from "../components/ErrorMessage";
 
 export default function Search() {
+    // let searchTimeout
+
+    const [searchTimeout, setSearchTimeout] = useState("");
+
+    // User validation
+    let navigate = useNavigate();
+    useEffect(() => {
+        if (!isLogged) {
+            navigate("/login");
+        }
+    });
+
     const [menuItems, setMenuItems] = useState([]);
     const [isLoading, setIsloading] = useState(false);
+    const [error, setError] = useState(false);
 
-    const apiKey = "apiKey=cb10ceed459a4109905001bf404c17d9";
+    // const apiKey = "apiKey=cb10ceed459a4109905001bf404c17d9";
 
-    const { addDish } = useContext(DishesContext)
+    const { addDish } = useContext(DishesContext);
+    const { isLogged } = useContext(UserSessionContext);
 
-    const searchCharacter = (query) => {
+    const searchItem = (query) => {
         axios
             .get(
-                `https://api.spoonacular.com/food/menuItems/search?${apiKey}&query=${query}&number=8`
+                `https://api.spoonacular.com/food/menuItems/search?apiKey=${process.env.REACT_APP_APIKEY}&query=${query}&number=8`
             )
             .then((response) => {
-                // console.log(response.data.results)
-                console.log(response);
-                console.log(response.data.menuItems);
-                // if (response.status === "200") {
-                // }
+                // console.log(response);
+                // console.log(response.data.menuItems);
                 setMenuItems(response.data.menuItems);
                 setIsloading(false);
-                // if (response.data.response === "success") {
-                //     // setCharacters(response.data.results);
-                // }
+            })
+            .catch((error) => {
+                console.log(error);
+                setIsloading(false);
+                setError(true);
+
+                setTimeout(() => setError(false), 2000);
             });
     };
 
@@ -41,15 +60,28 @@ export default function Search() {
             searchInput: "",
         },
         onSubmit: (values) => {
-            searchCharacter(values.searchInput);
+            searchItem(values.searchInput);
             setIsloading(true);
         },
     });
 
-    // const updateTeam = (team, character) => {};
+    const validateLengthField = (e) => {
+        formik.handleChange(e);
+        if (searchTimeout !== "") {
+            clearTimeout(searchTimeout);
+        }
+        if (formik.values.searchInput.length >= 2 && !isLoading && !error) {
+            setSearchTimeout(
+                setTimeout((e) => {
+                    formik.handleSubmit(e);
+                }, 1000)
+            );
+        }
+    };
 
     return (
         <AppLayout>
+            <h2 className="text-center mb-4">Search your next food!</h2>
             <form
                 onSubmit={formik.handleSubmit}
                 className="d-flex container justify-content-center"
@@ -60,7 +92,7 @@ export default function Search() {
                         id="searchInput"
                         name="searchInput"
                         type="text"
-                        onChange={formik.handleChange}
+                        onChange={validateLengthField}
                         value={formik.values.searchInput}
                         placeholder="Search a dish"
                         aria-label="Search a dish"
@@ -73,27 +105,43 @@ export default function Search() {
                         text="Search"
                         isLoading={isLoading}
                         onClick={formik.handleSubmit}
+                        error={error}
                     />
                 </div>
             </form>
-            {/* <ListCharacters searchResultArray={characters} setActualTeam={setActualTeam} teams={teams} /> */}
-            <Gridlayout>
-                {menuItems.map(
-                    ({ id, image, restaurantChain, title, servings }) => {
-                        return (
-                            <Dish
-                                key={id}
-                                image={image}
-                                restaurantChain={restaurantChain}
-                                title={title}
-                                servings={servings}
-                                addButton={true}
-                                addDish={() => addDish(id, image, restaurantChain, title, servings)}
-                            />
-                        );
-                    }
-                )}
-            </Gridlayout>
+
+            {error ? (
+                <ErrorMessage addClass={"mx-auto"}>
+                    We have an error. Try again later
+                </ErrorMessage>
+            ) : (
+                <Gridlayout>
+                    {menuItems.map(
+                        ({ id, image, restaurantChain, title, servings }) => {
+                            return (
+                                <Dish
+                                    key={id}
+                                    image={image}
+                                    restaurantChain={restaurantChain}
+                                    title={title}
+                                    servings={servings}
+                                    addButton={true}
+                                    addDish={() =>
+                                        addDish(
+                                            id,
+                                            image,
+                                            restaurantChain,
+                                            title,
+                                            servings
+                                        )
+                                    }
+                                />
+                            );
+                        }
+                    )}
+                </Gridlayout>
+            )}
+            {isLoading && menuItems.length !== 0 ? <Loadingdata /> : null}
         </AppLayout>
     );
 }

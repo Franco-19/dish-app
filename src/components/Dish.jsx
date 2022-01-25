@@ -51,9 +51,9 @@ const Dish = ({
                                 text="Add"
                                 addClass="me-1"
                                 onClick={() => {
-                                    addDish()
+                                    addDish();
                                     setSuccess(true);
-                                    setTimeout(setSuccess(false), 2000)
+                                    setTimeout(() => setSuccess(false), 3000);
                                 }}
                                 successText="Added"
                                 success={success}
