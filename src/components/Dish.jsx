@@ -1,15 +1,23 @@
 import React, { useState } from "react";
 import Button from "./Button";
 
+import Modal from "./Modal";
+
 const Dish = ({
+    id,
     title,
     image,
     restaurantChain,
     servings,
     deleteButton = false,
     addButton = false,
+    detailsButton = false,
     addDish = null,
     deleteDish = null,
+    price,
+    vegan = false,
+    vegetarian = false,
+    nutrition = null,
 }) => {
     const [success, setSuccess] = useState(false);
 
@@ -25,6 +33,30 @@ const Dish = ({
                         </span>{" "}
                         {restaurantChain ? restaurantChain : "N/D"}
                     </p>
+
+                    {vegan || vegetarian ? (
+                        <div className="row">
+                            {vegan ? (
+                                <div className="col-6">
+                                    <p className="card-tex fw-light">
+                                        <span className="fw-normal text-decoration-underline">
+                                            Vegan
+                                        </span>
+                                    </p>
+                                </div>
+                            ) : null}
+                            {vegetarian ? (
+                                <div className="col-6">
+                                    <p className="card-tex fw-light">
+                                        <span className="fw-normal text-decoration-underline">
+                                            Vegetarian
+                                        </span>
+                                    </p>
+                                </div>
+                            ) : null}
+                        </div>
+                    ) : null}
+
                     <div className="row">
                         <div className="col-6">
                             <p className="card-tex fw-light">
@@ -44,6 +76,14 @@ const Dish = ({
                             </p>
                         </div>
                     </div>
+                    {price ? (
+                        <p className="card-tex fw-light">
+                            <span className="fw-normal text-decoration-underline">
+                                Price:
+                            </span>{" "}
+                            {price ? price : "N/D"}
+                        </p>
+                    ) : null}
 
                     <div className="d-flex justify-content-end">
                         {addButton ? (
@@ -59,6 +99,15 @@ const Dish = ({
                                 success={success}
                             />
                         ) : null}
+                        {detailsButton ? (
+                            <Button
+                                type="button"
+                                text="Details"
+                                addClass="me-1"
+                                dataBsToggle="modal"
+                                dataBsTarget={`#detailsModal${id}`}
+                            />
+                        ) : null}
                         {/* <Button text="Details" addClass="me-1" /> */}
                         {deleteButton ? (
                             <Button
@@ -70,6 +119,13 @@ const Dish = ({
                     </div>
                 </div>
             </div>
+
+            {detailsButton ? (
+                <Modal
+                    modalTargetId={`detailsModal${id}`}
+                    nutritionData={nutrition}
+                />
+            ) : null}
         </div>
     );
 };

@@ -16,6 +16,7 @@ export default function Home() {
     const [totalHealthScore, setTotalHealthScore] = useState(0);
     const [totalPreparationMinutes, setTotalPreparationMinutes] = useState(0);
     const [totalReadyInMinutes, setTotalReadyInMinutes] = useState(0);
+    const [totalPrice, setTotalPrice] = useState([]);
 
     const { isLogged } = useContext(UserSessionContext);
     const { menuItems, deleteDish } = useContext(DishesContext);
@@ -30,42 +31,54 @@ export default function Home() {
         getAllStats();
     }, [menuItems]);
 
-    // const getAllStats = ({healthScore}) => {
-    //     let totalHealthScore = 0
-    //     totalHealthScore += healthScore;
-    // }
-
-    // const [totalStats, setTotalStats] = useState([]);
-
-    // let totalHealthScore = 0;
-
-    function getAllStats() {
+    const getAllStats = () => {
         if (menuItems.length !== 0) {
-            menuItems.map(
-                ({ healthScore, preparationMinutes, readyInMinutes }) => {
-                    // console.log(healthScore)
-                    // totalHealthScore += healthScore
-                    setTotalHealthScore(totalHealthScore + healthScore);
-                    // console.log(totalHealthScore)
-                    setTotalPreparationMinutes(
-                        totalPreparationMinutes + preparationMinutes
-                    );
-                    setTotalReadyInMinutes(
-                        totalReadyInMinutes + readyInMinutes
-                    );
+            let priceSummation = 0;
+            let healthScoreSummation = 0;
+            let readyInMinutesSummation = 0;
+            let preparationMinutesSummation = 0;
+
+            menuItems.forEach(
+                ({
+                    healthScore,
+                    preparationMinutes,
+                    readyInMinutes,
+                    pricePerServing,
+                }) => {
+                    priceSummation += pricePerServing;
+                    healthScoreSummation += healthScore;
+                    preparationMinutesSummation += preparationMinutes;
+                    readyInMinutesSummation += readyInMinutes;
                 }
             );
+            setTotalPrice(priceSummation);
+            setTotalHealthScore(healthScoreSummation);
+            setTotalPreparationMinutes(preparationMinutesSummation);
+            setTotalReadyInMinutes(readyInMinutesSummation);
         } else {
             setTotalHealthScore(0);
+            setTotalPreparationMinutes(0);
+            setTotalReadyInMinutes(0);
+            setTotalPrice(0);
         }
-    }
+    };
 
     const RenderItems = () => {
         if (menuItems.length !== 0) {
             return (
                 <Gridlayout>
                     {menuItems.map(
-                        ({ id, title, image, servings, restaurantChain }) => {
+                        ({
+                            id,
+                            title,
+                            image,
+                            servings,
+                            restaurantChain,
+                            pricePerServing,
+                            vegan,
+                            vegetarian,
+                            nutrition
+                        }) => {
                             return (
                                 <Dish
                                     title={title}
@@ -75,6 +88,12 @@ export default function Home() {
                                     key={id}
                                     deleteButton={true}
                                     deleteDish={() => deleteDish(id)}
+                                    detailsButton={true}
+                                    price={pricePerServing}
+                                    vegan={vegan}
+                                    vegetarian={vegetarian}
+                                    id={id}
+                                    nutrition={nutrition}
                                 />
                             );
                         }
@@ -96,12 +115,16 @@ export default function Home() {
     return (
         <AppLayout>
             {/* Stats */}
-            {/* {getAllStats()} */}
             <div className="row mb-3">
                 <div className="col-6">
                     <Card>
                         <h5>Nutritional information</h5>
-
+                        <p>
+                            <span className="text-decoration-underline">
+                                Health Score
+                            </span>
+                            : {totalHealthScore}
+                        </p>
                     </Card>
                 </div>
                 <div className="col-6">
@@ -115,15 +138,15 @@ export default function Home() {
                         </p>
                         <p>
                             <span className="text-decoration-underline">
-                                Health Score
-                            </span>
-                            : {totalHealthScore}
-                        </p>
-                        <p>
-                            <span className="text-decoration-underline">
                                 Ready in
                             </span>
                             : {totalReadyInMinutes} minutes
+                        </p>
+                        <p>
+                            <span className="text-decoration-underline">
+                                Price
+                            </span>
+                            : {totalPrice}
                         </p>
                     </Card>
                 </div>

@@ -117,7 +117,16 @@ export default function Search() {
             ) : (
                 <Gridlayout>
                     {menuItems.map(
-                        ({ id, image, restaurantChain, title, servings }) => {
+                        ({
+                            id,
+                            image,
+                            restaurantChain,
+                            title,
+                            servings,
+                            pricePerServing,
+                            vegan,
+                            vegetarian,
+                        }) => {
                             return (
                                 <Dish
                                     key={id}
@@ -135,6 +144,10 @@ export default function Search() {
                                             servings
                                         )
                                     }
+                                    price={pricePerServing}
+                                    vegan={vegan}
+                                    vegetarian={vegetarian}
+                                    id={id}
                                 />
                             );
                         }

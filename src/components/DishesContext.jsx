@@ -11,9 +11,12 @@ const DishesContextProvider = (props) => {
     const addDish = (id, image, restaurantChain, title, servings) => {
         axios
             .get(
-                `https://api.spoonacular.com/recipes/${id}/information?apiKey=${process.env.REACT_APP_APIKEY}&includeNutrition=false`
+                `https://api.spoonacular.com/recipes/${id}/information?apiKey=${process.env.REACT_APP_APIKEY}&includeNutrition=true`
             )
             .then((response) => {
+
+                console.log(response)
+                
                 let item = {
                     id: id,
                     image: image,
@@ -28,6 +31,7 @@ const DishesContextProvider = (props) => {
                     healthScore: response.data.healthScore,
                     vegan: response.data.vegan,
                     vegetarian: response.data.vegetarian,
+                    nutrition: response.data.nutrition,
                 };
 
                 setMenuItems([...menuItems, item]);

@@ -13,6 +13,8 @@ const Button = ({
     type = "submit",
     id = "",
     onClick = null,
+    dataBsToggle = '',
+    dataBsTarget = '',
 }) => {
     if (error) {
         return (
@@ -49,6 +51,8 @@ const Button = ({
             className={`btn btn-${desing} ${addClass}`}
             id={id}
             onClick={onClick}
+            data-bs-toggle={dataBsToggle}
+            data-bs-target={dataBsTarget}
         >
             {text}
         </button>
