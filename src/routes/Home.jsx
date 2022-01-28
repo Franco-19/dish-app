@@ -9,6 +9,7 @@ import { DishesContext } from "../components/DishesContext";
 import Gridlayout from "../components/GridLayout";
 import AppLayout from "../components/AppLayout";
 import Card from "../components/Card";
+import KeyValueTitle from "../components/KeyValueTitle";
 
 export default function Home() {
     let navigate = useNavigate();
@@ -77,7 +78,7 @@ export default function Home() {
                             pricePerServing,
                             vegan,
                             vegetarian,
-                            nutrition
+                            nutrition,
                         }) => {
                             return (
                                 <Dish
@@ -105,9 +106,9 @@ export default function Home() {
         return (
             <div className="container">
                 <p className="text-center">
-                    No tienes ningún menú creado actualmente.
+                You don't have any menu currently created.
                     <br />
-                    <Link to="/search">Comienza creando uno ahora</Link>
+                    <Link to="/search">Start by creating one</Link>
                 </p>
             </div>
         );
@@ -115,45 +116,37 @@ export default function Home() {
     return (
         <AppLayout>
             {/* Stats */}
-            <div className="row mb-3">
-                <div className="col-6">
-                    <Card>
-                        <h5>Nutritional information</h5>
-                        <p>
-                            <span className="text-decoration-underline">
-                                Health Score
-                            </span>
-                            : {totalHealthScore}
-                        </p>
-                    </Card>
-                </div>
-                <div className="col-6">
+            <div className="row row-cols-1 row-cols-lg-2 mb-3">
+                <div className="col-lg-3 mb-3">
                     <Card>
                         <h5>Menu information</h5>
-                        <p>
-                            <span className="text-decoration-underline">
-                                Preparation time
-                            </span>
-                            : {totalPreparationMinutes} minutes
-                        </p>
-                        <p>
-                            <span className="text-decoration-underline">
-                                Ready in
-                            </span>
-                            : {totalReadyInMinutes} minutes
-                        </p>
-                        <p>
-                            <span className="text-decoration-underline">
-                                Price
-                            </span>
-                            : {totalPrice}
-                        </p>
+                        <KeyValueTitle
+                            keyName={"Preparation time"}
+                            value={totalPreparationMinutes}
+                            unit="minutes"
+                        />
+                        <KeyValueTitle
+                            keyName={"Ready in"}
+                            value={totalReadyInMinutes}
+                            unit="minutes"
+                        />
+                        <KeyValueTitle
+                            keyName={"Price"}
+                            value={totalPrice}
+                        />
+                        <KeyValueTitle
+                            keyName={"Health Score"}
+                            value={totalHealthScore}
+                        />
                     </Card>
                 </div>
+                <div className="col-lg-9">
+                    <RenderItems />
+                </div>
+                {/* <div class="vr"></div> */}
             </div>
 
             {/* Items */}
-            <RenderItems />
         </AppLayout>
     );
 }

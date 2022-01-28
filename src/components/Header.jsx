@@ -5,7 +5,7 @@ import Logo from "./Logo";
 
 export default function Header() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm mb-4"> 
+    <nav className="navbar navbar-expand navbar-light bg-light shadow-sm mb-4"> 
       <div className="container">
         <Link to="/" className="navbar-brand">
           <Logo addTitleClass="fs-2 text fw-light" />

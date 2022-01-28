@@ -115,7 +115,7 @@ export default function Search() {
                     We have an error. Try again later
                 </ErrorMessage>
             ) : (
-                <Gridlayout>
+                <Gridlayout addClass={"row-cols-lg-4"} >
                     {menuItems.map(
                         ({
                             id,

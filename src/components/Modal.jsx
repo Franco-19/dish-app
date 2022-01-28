@@ -1,6 +1,8 @@
 import React from "react";
 
 // import ChartRace from "react-chart-race";
+import KeyValueTitle from "./KeyValueTitle";
+import AccordionItem from "./AccordionItem";
 
 import {
     Radar,
@@ -33,7 +35,6 @@ import {
 // ];
 
 const Modal = ({ modalTargetId, nutritionData = [] }) => {
-
     let caloricBreakdownData = [];
 
     if (nutritionData.length !== 0) {
@@ -104,30 +105,96 @@ const Modal = ({ modalTargetId, nutritionData = [] }) => {
                                 </ResponsiveContainer>
                             </div>
                         ) : null}
-                        {/* <ChartRace data={caloricBreakdownData} width={468}/> */}
-                        {/* <ul>
-                            {caloricBreakdownData.map((element) => {
-                                return (
-                                    <p>
-                                        <li>
-                                            {element.title}: {element.value}
-                                        </li>
-                                    </p>
-                                );
-                            })}
-                        </ul> */}
                     </div>
-                    <div className="modal-footer">
-                        <button
-                            type="button"
-                            className="btn btn-secondary"
-                            data-bs-dismiss="modal"
+
+                    <div className="container-fluid">
+                        <KeyValueTitle
+                            keyName={"Weight Per Serving"}
+                            value={nutritionData.weightPerServing.amount}
+                            unit={nutritionData.weightPerServing.unit}
+                        />
+                    </div>
+
+                    {/* Accordion */}
+                    <div className="accordion" id="accordion">
+                        {/* Nutrients */}
+                        <AccordionItem name={"nutrients"} parent={"accordion"}>
+                            <div className="d-flex flex-column flex-sm-row flex-sm-wrap row">
+                                {nutritionData.nutrients.map(
+                                    ({ name, amount, unit }) => {
+                                        return (
+                                            <div className="item_custom_width text-center text-sm-start ">
+                                                <KeyValueTitle
+                                                    keyName={name}
+                                                    value={amount}
+                                                    unit={unit}
+                                                />
+                                            </div>
+                                        );
+                                    }
+                                )}
+                            </div>
+                        </AccordionItem>
+
+                        {/* Properties */}
+                        <AccordionItem name={"properties"} parent={"accordion"}>
+                            <div className="d-flex flex-sm-wrap">
+                                {nutritionData.properties.map(
+                                    ({ name, amount, unit }) => {
+                                        return (
+                                            <div className="w-50">
+                                                <KeyValueTitle
+                                                    keyName={name}
+                                                    value={amount}
+                                                    unit={unit}
+                                                />
+                                            </div>
+                                        );
+                                    }
+                                )}
+                            </div>
+                        </AccordionItem>
+
+                        {/* Ingredients */}
+                        <AccordionItem
+                            name={"ingredients"}
+                            parent={"accordion"}
                         >
-                            Close
-                        </button>
-                        <button type="button" className="btn btn-primary">
-                            Save changes
-                        </button>
+                            <div className="d-flex flex-sm-wrap">
+                                {nutritionData.ingredients.map(
+                                    ({ name, amount, unit }) => {
+                                        return (
+                                            <div className="w-50">
+                                                <KeyValueTitle
+                                                    keyName={name}
+                                                    value={amount}
+                                                    unit={unit}
+                                                />
+                                            </div>
+                                        );
+                                    }
+                                )}
+                            </div>
+                        </AccordionItem>
+
+                        {/* Flavonoids */}
+                        <AccordionItem name={"flavonoids"} parent={"accordion"}>
+                            <div className="d-flex flex-sm-wrap">
+                                {nutritionData.flavonoids.map(
+                                    ({ name, amount, unit }) => {
+                                        return (
+                                            <div className="w-50">
+                                                <KeyValueTitle
+                                                    keyName={name}
+                                                    value={amount}
+                                                    unit={unit}
+                                                />
+                                            </div>
+                                        );
+                                    }
+                                )}
+                            </div>
+                        </AccordionItem>
                     </div>
                 </div>
             </div>

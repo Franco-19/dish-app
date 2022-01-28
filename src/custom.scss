@@ -17,6 +17,14 @@ $alert-padding-y: 0.5rem;
     object-position: 50% 50%;
 }
 
+.item_custom_width {
+    width: 100%;
+
+    @media screen and (min-width: 576px) {
+        width: 50% !important;
+    }
+}
+
 // .raceItem {
 //     max-width: 95%
 // }
