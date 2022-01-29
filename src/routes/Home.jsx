@@ -20,7 +20,7 @@ export default function Home() {
     const [totalPrice, setTotalPrice] = useState([]);
 
     const { isLogged } = useContext(UserSessionContext);
-    const { menuItems, deleteDish } = useContext(DishesContext);
+    const { menuItems, deleteDish, veganItemCounter ,nonVeganItemCounter } = useContext(DishesContext);
 
     useEffect(() => {
         if (!isLogged) {
@@ -41,12 +41,18 @@ export default function Home() {
 
             menuItems.forEach(
                 ({
-                    healthScore,
-                    preparationMinutes,
-                    readyInMinutes,
-                    pricePerServing,
+                    healthScore = null,
+                    preparationMinutes = null,
+                    readyInMinutes = null,
+                    pricePerServing = null,
                 }) => {
-                    priceSummation += pricePerServing;
+                    if (
+                        pricePerServing !== null ||
+                        healthScore !== null ||
+                        preparationMinutes !== null ||
+                        readyInMinutes !== null
+                    )
+                        priceSummation += pricePerServing;
                     healthScoreSummation += healthScore;
                     preparationMinutesSummation += preparationMinutes;
                     readyInMinutesSummation += readyInMinutes;
@@ -106,7 +112,7 @@ export default function Home() {
         return (
             <div className="container">
                 <p className="text-center">
-                You don't have any menu currently created.
+                    You don't have any menu currently created.
                     <br />
                     <Link to="/search">Start by creating one</Link>
                 </p>
@@ -130,23 +136,25 @@ export default function Home() {
                             value={totalReadyInMinutes}
                             unit="minutes"
                         />
-                        <KeyValueTitle
-                            keyName={"Price"}
-                            value={totalPrice}
-                        />
+                        <KeyValueTitle keyName={"Price"} value={totalPrice} />
                         <KeyValueTitle
                             keyName={"Health Score"}
                             value={totalHealthScore}
+                        />
+                        <KeyValueTitle
+                            keyName={"Vegan Items"}
+                            value={veganItemCounter}
+                        />
+                        <KeyValueTitle
+                            keyName={"Non Vegan items"}
+                            value={nonVeganItemCounter}
                         />
                     </Card>
                 </div>
                 <div className="col-lg-9">
                     <RenderItems />
                 </div>
-                {/* <div class="vr"></div> */}
             </div>
-
-            {/* Items */}
         </AppLayout>
     );
 }

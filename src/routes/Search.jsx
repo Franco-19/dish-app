@@ -29,6 +29,8 @@ export default function Search() {
     const [menuItems, setMenuItems] = useState([]);
     const [isLoading, setIsloading] = useState(false);
     const [error, setError] = useState(false);
+    // const [success, setSuccess] = useState(false);
+
 
     // const apiKey = "apiKey=cb10ceed459a4109905001bf404c17d9";
 

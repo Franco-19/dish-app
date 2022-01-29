@@ -18,6 +18,7 @@ const Dish = ({
     vegan = false,
     vegetarian = false,
     nutrition = null,
+    successState = false,
 }) => {
     const [success, setSuccess] = useState(false);
 
