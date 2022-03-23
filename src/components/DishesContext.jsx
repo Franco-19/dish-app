@@ -1,8 +1,8 @@
-import React, { createContext } from "react";
+import React, { useEffect, useState, createContext } from "react";
 import useLocalStorage from "../useLocalStorage";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { useEffect, useState } from "react/cjs/react.development";
+// import { useEffect, useState } from "react/cjs/react.development";
 
 const DishesContext = createContext();
 
@@ -10,7 +10,6 @@ const DishesContextProvider = (props) => {
     const [menuItems, setMenuItems] = useLocalStorage("menuItems", []);
     const [veganItemCounter, setVeganItemCounter] = useState(0);
     const [nonVeganItemCounter, setNonVeganItemCounter] = useState(0);
-    const [canAddItem, setCanAddItemm] = useState(true);
 
     useEffect(() => {
         verifyMenuLength();
