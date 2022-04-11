@@ -52,7 +52,7 @@ export default function Login() {
         onSubmit: (value) => {
             setIsLoading(true);
             axios
-                .post("http://challenge-react.alkemy.org/", {
+                .post("/api", {
                     email: value.emailInput,
                     password: value.passwordInput,
                 })
